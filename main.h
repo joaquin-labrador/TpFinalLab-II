@@ -29,3 +29,4 @@ typedef struct nodoA
 
 //Prototipados
 nodoT crearNodoT (int pos,int idDoc);
+nodoA crearNodoA (char palabra[],int frecuencia);
