@@ -1,43 +1,39 @@
-//Librerias y constantes
+// Librerias y constantes
 
+#include <ctype.h>
+#include <malloc.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
-#include <windows.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 #define FILE_PALABRAS "Palabras.bin"
 
-//Estructuras de datos
+// Estructuras de datos
 typedef struct {
-  char palabra[20];
-  int idDOC;
-  int pos; //incrementa palabra por palabra, y no letra por letra
-}termino;
-typedef struct nodoT
-{
+    char palabra[20];
+    int idDOC;
+    int pos;  // incrementa palabra por palabra, y no letra por letra
+} termino;
+typedef struct nodoT {
     int idDOC;
     int pos;
     struct nodoT* sig;
-}nodoT;
-typedef struct nodoA
-{
-   char palabra[20];
-   int frecuencia; //representa la cantidad de nodos de la lista
-   nodoT* ocurrencias; //ordenada por idDOC, luego por pos
-   struct nodoA* der;
-   struct nodoA* izq;
-}nodoA;
+} nodoT;
+typedef struct nodoA {
+    char palabra[20];
+    int frecuencia;      // representa la cantidad de nodos de la lista
+    nodoT* ocurrencias;  // ordenada por idDOC, luego por pos
+    struct nodoA* der;
+    struct nodoA* izq;
+} nodoA;
 
-//Prototipados
-nodoT crearNodoT (int pos,int idDoc);
-nodoA crearNodoA (char palabra[],int frecuencia);   
-termino crearTermino (char palabra[],int idDoc, int pos);
+// Prototipados
+nodoT crearNodoT(int pos, int idDoc);
+nodoA crearNodoA(char palabra[], int frecuencia);
+termino crearTermino(char palabra[], int idDoc, int pos);
 void escribirTermino(char palabra[], int idDoc, int pos);
 void leerTexto();
 int pesoArchivo();
 char* convertirAChar(int id);
 int esCaracterValido(char termino);
-void separarChar(char palabra[], int id);
-nodoA crearNodoA (char palabra[],int frecuencia);
-
+void separarChar(char palabra[], int id, int cantLetras);
+nodoA crearNodoA(char palabra[], int frecuencia);
