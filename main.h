@@ -37,3 +37,5 @@ char* convertirAChar(int id);
 int esCaracterValido(char termino);
 void separarChar(char palabra[], int id, int cantLetras);
 nodoA crearNodoA(char palabra[], int frecuencia);
+void mostrarArchivoBIN();
+void mostradorTermino(termino t);

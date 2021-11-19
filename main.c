@@ -1,7 +1,7 @@
 #include "main.h"
 
 int main() {
-    leerTexto(1);
+   mostrarArchivoBIN();
     return 0;
 }
 
@@ -32,7 +32,6 @@ termino crearTermino(char palabra[], int idDoc, int pos) {
 void escribirTermino(char palabra[], int idDoc, int pos) {
     FILE *buff = fopen(FILE_PALABRAS, "ab");
     termino t = crearTermino(palabra, idDoc, pos);
-    // printf("BONDIOLA CASERA: %s -- %d\n", t.palabra, t.pos);
     fwrite(&t, sizeof(termino), 1, buff);
     fclose(buff);
 }
@@ -58,7 +57,6 @@ void leerTexto(int id) {
 }
 
 void separarChar(char palabra[], int id, int cantLetras) {
-    printf("%s | %d\n", palabra, strlen(palabra));
     char *aux = (char *)calloc(sizeof(char), 20);
     int contador = 0;
     int pos = 0;
@@ -70,7 +68,7 @@ void separarChar(char palabra[], int id, int cantLetras) {
             flag = 1;       // pq es valido
         } else if (flag) {  // Si lee dos caracteres invalidos seguidos no se entra
             aux[contador] = '\0';
-            // escribirTermino(aux, id, pos);
+            escribirTermino(aux, id, pos);
             printf("%s-- %d\n", aux, contador);
             pos++;
             contador = 0;
@@ -113,4 +111,19 @@ char *convertirAChar(int id) {
     char *resultado = (char *)calloc(sizeof(char), 40);
     strcpy(resultado, texto);
     return resultado;
+}
+void mostrarArchivoBIN(){
+    FILE *buffer = fopen(FILE_PALABRAS,"rb");
+    termino t;
+    while(fread(&t,sizeof(termino),1,buffer)){
+        mostradorTermino(t);
+    }
+    fclose(buffer);
+}
+void mostradorTermino(termino t){
+    printf("--------------\n");
+    printf("Palabra : %s\n",t.palabra);
+    printf("IdDoc : %d \n",t.idDOC);
+    printf("Posicion : %d\n",t.pos);
+    printf("--------------\n");
 }
