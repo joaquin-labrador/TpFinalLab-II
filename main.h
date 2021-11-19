@@ -30,8 +30,12 @@ typedef struct nodoA
 
 //Prototipados
 nodoT crearNodoT (int pos,int idDoc);
+
 nodoA crearNodoA (char palabra[],int frecuencia);   
 void crearDocumentoDePalabras();
 termino crearTermino (char palabra[],int idDoc, int pos);
 int verificarID(int id);
 int verificadorP(char palabra[]);
+
+nodoA crearNodoA (char palabra[],int frecuencia);
+
