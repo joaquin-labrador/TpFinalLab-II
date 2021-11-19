@@ -1,78 +1,135 @@
 #include "main.h"
-int main(){
-    
+int main()
+{
+    leerTexto(1);
     return 0;
 }
-nodoT crearNodoT (int pos,int idDoc){
-    nodoT *nuevo = (nodoT*)malloc(sizeof(nodoT));
+nodoT crearNodoT(int pos, int idDoc)
+{
+    nodoT *nuevo = (nodoT *)malloc(sizeof(nodoT));
     nuevo->idDOC = idDoc;
     nuevo->pos = pos;
     nuevo->sig = NULL;
 }
-nodoA crearNodoA (char palabra[],int frecuencia){
-    nodoA *nuevo = (nodoA*)malloc(sizeof(nodoA));
+nodoA crearNodoA(char palabra[], int frecuencia)
+{
+    nodoA *nuevo = (nodoA *)malloc(sizeof(nodoA));
     nuevo->frecuencia = frecuencia;
-    strcpy(nuevo->palabra,palabra);
+    strcpy(nuevo->palabra, palabra);
     nuevo->ocurrencias = NULL;
-    nuevo->der= NULL;
+    nuevo->der = NULL;
     nuevo->izq = NULL;
 }
-termino crearTermino (char palabra[],int idDoc, int pos){
+termino crearTermino(char palabra[], int idDoc, int pos)
+{
     termino m;
     m.idDOC = idDoc;
-    strcpy(m.palabra,palabra),
+    strcpy(m.palabra, palabra);
     m.pos = pos;
     return m;
 }
-void crearDocumentoDePalabras(){
-    FILE *buffer = fopen(FILE_PALABRAS, "ab");
-    srand(time(NULL));
-    int id;
-    int pos = 0;
-    char palabra[20];
-    char s = 's';
-    do{
-        do{
-            id = rand()% 1000 + 1;
-        }while(verificarID(id) == 0);
-        do{
-            printf("Ingrese una palabra\n");
-            fflush(stdin);
-            gets(palabra);
-        }while(verificadorP(palabra) == 0);
-        pos = pos++;
-        termino s = crearTermino(palabra,id,pos);
-        fwrite(&s,sizeof(termino),1,buffer);
-        printf("Continuar : ");
-        fflush(stdin);
-        scanf("%d",&s);
-        system("cls");
-    }while(s == 's');
+void escribirTermino(char palabra[], int idDoc, int pos)
+{
+    FILE *buff = fopen(FILE_PALABRAS, "ab");
+    termino t = crearTermino(palabra, idDoc, pos);
+    fread(&t, sizeof(termino), 1, buff);
+    fclose(buff);
+}
 
-}
-int verificarID(int id){
-    FILE *buffer = fopen(FILE_PALABRAS,"rb");
-    termino s;
-    if(buffer != NULL){
-        while(fread(&s,sizeof(termino),1,buffer)>0){
-            if(s.idDOC == id){
-                return 0;
-            }
+void leerTexto(int id)
+{
+    int i = 0;
+    char *idDoc = convertirAChar(id);
+    FILE *buffer = fopen(idDoc, "r");
+    int peso = pesoArchivo(id);
+    char *texto = (char *)calloc(sizeof(char) , peso);
+    strcpy(texto, " ");
+    if (buffer != NULL)
+    {
+        while(fread(&texto[i], sizeof(char) , 1, buffer) > 0){
+            i++;   
         }
-        return 1;
-        fclose(buffer);
+        separarChar(texto, id);     
     }
 }
-int verificadorP(char palabra[]){
-       FILE *buffer = fopen(FILE_PALABRAS,"rb");
-    termino s;
-    if(buffer != NULL){
-        while(fread(&s,sizeof(termino),1,buffer)>0){
-            if(stricmp(palabra,s.palabra)==0){
-                return 0;
+void separarChar(char palabra[], int id)
+{
+    printf("%s\n",palabra);
+
+    char *aux = NULL;
+    int contador = 0;
+    int pos = 0;
+    int flag = 0;
+    for (int i = 0; i < pesoArchivo(id); i++)
+    {
+        if (aux != NULL)
+        {
+            if (esCaracterValido(palabra[i]))
+            {
+                aux[contador++] = palabra[i];
+                flag = 1; //pq es valido
+            }
+            else if (flag)
+            { //Si lee dos caracteres invalidos seguidos no se entra
+                escribirTermino(aux, id, pos);
+                printf("%s\n", aux);
+                pos++;
+                contador = 0;
+                flag = 0;
+                free(aux);
             }
         }
-        return 1;
-        fclose(buffer);
+        else{
+            aux = (char *)calloc(sizeof(char), 20);
+            strcpy(aux, " ");
+            i--;
+
+        }
     }
+}
+int esCaracterValido(char termino)
+{
+    switch (termino)
+    {
+    case ',':
+    case '.':
+    case ':':
+    case ';':
+    case ' ':
+    case '\0':
+    case '/':
+    case '(':
+    case ')':
+    case '{':
+    case '}':
+    case '[':
+    case ']':
+    case '<':
+    case '>':
+    case '\'':
+    case '\"':
+        return 0;
+    default:
+        return 1;
+        break;
+    }
+    return 0;
+}
+int pesoArchivo(int id)
+{
+    char *idDoc = convertirAChar(id);
+    FILE *buffer = fopen(idDoc, "r");
+    if (buffer != NULL)
+    {
+        fseek(buffer, 0, SEEK_END);
+        int cant = ftell(buffer) / sizeof(char);
+        fclose(buffer);
+        return cant;
+    }
+}
+char *convertirAChar(int id)
+{
+    char *texto = (char *)malloc(sizeof(char) * 20);
+    sprintf(texto, "%d.txt", id);
+    return texto;
 }

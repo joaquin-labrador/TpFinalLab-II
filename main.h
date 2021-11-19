@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #define FILE_PALABRAS "Palabras.bin"
+
 //Estructuras de datos
 typedef struct {
   char palabra[20];
@@ -30,12 +31,13 @@ typedef struct nodoA
 
 //Prototipados
 nodoT crearNodoT (int pos,int idDoc);
-
 nodoA crearNodoA (char palabra[],int frecuencia);   
-void crearDocumentoDePalabras();
 termino crearTermino (char palabra[],int idDoc, int pos);
-int verificarID(int id);
-int verificadorP(char palabra[]);
-
+void escribirTermino(char palabra[], int idDoc, int pos);
+void leerTexto();
+int pesoArchivo();
+char* convertirAChar(int id);
+int esCaracterValido(char termino);
+void separarChar(char palabra[], int id);
 nodoA crearNodoA (char palabra[],int frecuencia);
 
