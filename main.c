@@ -1,24 +1,30 @@
 #include "main.h"
 
 int main() {
+    //LEER
+    /* Falta funcion que lea el archivo .bin y que vaya insertando palabras en el arbol y 
+    si la misma ya exisiste que se inserte solo sus datos: "id archivo , pos" en eso nodo del arbol
+    nada mas por ahora solo eso MAXIMO*/
    mostrarArchivoBIN();
     return 0;
 }
 
-nodoT crearNodoT(int pos, int idDoc) {
+nodoT *crearNodoT(int pos, int idDoc) {
     nodoT *nuevo = (nodoT *)malloc(sizeof(nodoT));
     nuevo->idDOC = idDoc;
     nuevo->pos = pos;
     nuevo->sig = NULL;
+    return nuevo;
 }
 
-nodoA crearNodoA(char palabra[], int frecuencia) {
+nodoA *crearNodoA(char palabra[]) {
     nodoA *nuevo = (nodoA *)malloc(sizeof(nodoA));
-    nuevo->frecuencia = frecuencia;
+    nuevo->frecuencia = 0;
     strcpy(nuevo->palabra, palabra);
     nuevo->ocurrencias = NULL;
     nuevo->der = NULL;
     nuevo->izq = NULL;
+    return nuevo;
 }
 
 termino crearTermino(char palabra[], int idDoc, int pos) {
@@ -126,4 +132,39 @@ void mostradorTermino(termino t){
     printf("IdDoc : %d \n",t.idDOC);
     printf("Posicion : %d\n",t.pos);
     printf("--------------\n");
+}
+void insertarOrdenado(nodoT **lista, int pos , int idDoc){
+    nodoT *nuevo = crearNodoT(pos,idDoc);
+    nodoT *act;
+    nodoT *ante;
+    if(*lista == NULL){
+        *lista = nuevo;
+    }
+    else{
+        if(*lista != NULL && (*lista)->idDOC < idDoc){
+            nuevo->sig = *lista;
+            *lista = nuevo;
+        }
+        else{
+            act = (*lista)->sig;
+            ante = *lista;
+            while(act != NULL && act->idDOC > idDoc){
+                ante = act;
+                act = act->sig;
+            }
+            ante->sig = act->sig;
+            act = nuevo;
+        }
+    }
+}
+void insertarArbol(nodoA **a,termino t){
+    if(*a != NULL){
+        if(strcmp((*a)->palabra,t.palabra) > 0)
+            insertarArbol(&((*a)->izq),t);
+        else    
+            insertarArbol(&((*a)->der),t);
+    }
+    else
+        *a = crearNodoA(t.palabra);
+
 }

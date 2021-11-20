@@ -27,8 +27,8 @@ typedef struct nodoA {
 } nodoA;
 
 // Prototipados
-nodoT crearNodoT(int pos, int idDoc);
-nodoA crearNodoA(char palabra[], int frecuencia);
+nodoT *crearNodoT(int pos, int idDoc);
+nodoA *crearNodoA(char palabra[]);
 termino crearTermino(char palabra[], int idDoc, int pos);
 void escribirTermino(char palabra[], int idDoc, int pos);
 void leerTexto();
@@ -36,6 +36,6 @@ int pesoArchivo();
 char* convertirAChar(int id);
 int esCaracterValido(char termino);
 void separarChar(char palabra[], int id, int cantLetras);
-nodoA crearNodoA(char palabra[], int frecuencia);
+void insertarArbol(nodoA **a,termino t);
 void mostrarArchivoBIN();
 void mostradorTermino(termino t);
