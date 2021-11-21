@@ -1,15 +1,19 @@
 #include "main.h"
 
-int main() {
+int main()
+{
     //LEER
     /* Falta funcion que lea el archivo .bin y que vaya insertando palabras en el arbol y 
     si la misma ya exisiste que se inserte solo sus datos: "id archivo , pos" en eso nodo del arbol
     nada mas por ahora solo eso MAXIMO*/
-   mostrarArchivoBIN();
+    nodoA *arbolDeLista = NULL;
+    crearArbolDeListas(&arbolDeLista); 
+    inorder(arbolDeLista);
     return 0;
 }
 
-nodoT *crearNodoT(int pos, int idDoc) {
+nodoT *crearNodoT(int pos, int idDoc)
+{
     nodoT *nuevo = (nodoT *)malloc(sizeof(nodoT));
     nuevo->idDOC = idDoc;
     nuevo->pos = pos;
@@ -17,7 +21,8 @@ nodoT *crearNodoT(int pos, int idDoc) {
     return nuevo;
 }
 
-nodoA *crearNodoA(char palabra[]) {
+nodoA *crearNodoA(char palabra[])
+{
     nodoA *nuevo = (nodoA *)malloc(sizeof(nodoA));
     nuevo->frecuencia = 0;
     strcpy(nuevo->palabra, palabra);
@@ -27,7 +32,8 @@ nodoA *crearNodoA(char palabra[]) {
     return nuevo;
 }
 
-termino crearTermino(char palabra[], int idDoc, int pos) {
+termino crearTermino(char palabra[], int idDoc, int pos)
+{
     termino m;
     m.idDOC = idDoc;
     strcpy(m.palabra, palabra);
@@ -35,44 +41,53 @@ termino crearTermino(char palabra[], int idDoc, int pos) {
     return m;
 }
 
-void escribirTermino(char palabra[], int idDoc, int pos) {
+void escribirTermino(char palabra[], int idDoc, int pos)
+{
     FILE *buff = fopen(FILE_PALABRAS, "ab");
     termino t = crearTermino(palabra, idDoc, pos);
     fwrite(&t, sizeof(termino), 1, buff);
     fclose(buff);
 }
 
-void leerTexto(int id) {
+void leerTexto(int id)
+{
     int i = 0;
     char *idDoc = convertirAChar(id);
     FILE *buffer = fopen(idDoc, "rb");
 
-    free(idDoc);  // xDDDDD
+    free(idDoc); // xDDDDD
 
     fseek(buffer, 0, SEEK_END);
     int cantLetras = ftell(buffer) / sizeof(char);
     fseek(buffer, 0, SEEK_SET);
     char *texto = (char *)calloc(sizeof(char), cantLetras);
     strcpy(texto, " ");
-    if (buffer != NULL) {
-        while (fread(&texto[i], sizeof(char), 1, buffer) > 0) {
+    if (buffer != NULL)
+    {
+        while (fread(&texto[i], sizeof(char), 1, buffer) > 0)
+        {
             i++;
         }
         separarChar(texto, id, cantLetras);
     }
 }
 
-void separarChar(char palabra[], int id, int cantLetras) {
+void separarChar(char palabra[], int id, int cantLetras)
+{
     char *aux = (char *)calloc(sizeof(char), 20);
     int contador = 0;
     int pos = 0;
     int flag = 0;
 
-    for (int i = 0; i < cantLetras; i++) {
-        if (esCaracterValido(palabra[i])) {
+    for (int i = 0; i < cantLetras; i++)
+    {
+        if (esCaracterValido(palabra[i]))
+        {
             aux[contador++] = tolower(palabra[i]);
-            flag = 1;       // pq es valido
-        } else if (flag) {  // Si lee dos caracteres invalidos seguidos no se entra
+            flag = 1; // pq es valido
+        }
+        else if (flag)
+        { // Si lee dos caracteres invalidos seguidos no se entra
             aux[contador] = '\0';
             escribirTermino(aux, id, pos);
             printf("%s-- %d\n", aux, contador);
@@ -84,33 +99,36 @@ void separarChar(char palabra[], int id, int cantLetras) {
     free(aux);
 }
 
-int esCaracterValido(char termino) {
-    switch (termino) {
-        case ',':
-        case '.':
-        case ':':
-        case ';':
-        case ' ':
-        case '\0':
-        case '/':
-        case '(':
-        case ')':
-        case '{':
-        case '}':
-        case '[':
-        case ']':
-        case '<':
-        case '>':
-        case '\'':
-        case '\n':
-        case '\r':
-        case '\"':
-            return 0;
-        default:
-            return 1;
+int esCaracterValido(char termino)
+{
+    switch (termino)
+    {
+    case ',':
+    case '.':
+    case ':':
+    case ';':
+    case ' ':
+    case '\0':
+    case '/':
+    case '(':
+    case ')':
+    case '{':
+    case '}':
+    case '[':
+    case ']':
+    case '<':
+    case '>':
+    case '\'':
+    case '\n':
+    case '\r':
+    case '\"':
+        return 0;
+    default:
+        return 1;
     }
 }
-char *convertirAChar(int id) {
+char *convertirAChar(int id)
+{
     char texto[40];
     itoa(id, texto, 10);
     strcat(texto, ".txt\0");
@@ -118,37 +136,46 @@ char *convertirAChar(int id) {
     strcpy(resultado, texto);
     return resultado;
 }
-void mostrarArchivoBIN(){
-    FILE *buffer = fopen(FILE_PALABRAS,"rb");
+void mostrarArchivoBIN()
+{
+    FILE *buffer = fopen(FILE_PALABRAS, "rb");
     termino t;
-    while(fread(&t,sizeof(termino),1,buffer)){
+    while (fread(&t, sizeof(termino), 1, buffer))
+    {
         mostradorTermino(t);
     }
     fclose(buffer);
 }
-void mostradorTermino(termino t){
+void mostradorTermino(termino t)
+{
     printf("--------------\n");
-    printf("Palabra : %s\n",t.palabra);
-    printf("IdDoc : %d \n",t.idDOC);
-    printf("Posicion : %d\n",t.pos);
+    printf("Palabra : %s\n", t.palabra);
+    printf("IdDoc : %d \n", t.idDOC);
+    printf("Posicion : %d\n", t.pos);
     printf("--------------\n");
 }
-void insertarOrdenado(nodoT **lista, int pos , int idDoc){
-    nodoT *nuevo = crearNodoT(pos,idDoc);
+void insertarOrdenado(nodoT **lista, int pos, int idDoc)
+{
+    nodoT *nuevo = crearNodoT(pos, idDoc);
     nodoT *act;
     nodoT *ante;
-    if(*lista == NULL){
+    if (*lista == NULL)
+    {
         *lista = nuevo;
     }
-    else{
-        if(*lista != NULL && (*lista)->idDOC < idDoc){
+    else
+    {
+        if (*lista != NULL && (*lista)->idDOC < idDoc)
+        {
             nuevo->sig = *lista;
             *lista = nuevo;
         }
-        else{
+        else
+        {
             act = (*lista)->sig;
             ante = *lista;
-            while(act != NULL && act->idDOC > idDoc){
+            while (act != NULL && act->idDOC > idDoc)
+            {
                 ante = act;
                 act = act->sig;
             }
@@ -157,14 +184,82 @@ void insertarOrdenado(nodoT **lista, int pos , int idDoc){
         }
     }
 }
-void insertarArbol(nodoA **a,termino t){
-    if(*a != NULL){
-        if(strcmp((*a)->palabra,t.palabra) > 0)
-            insertarArbol(&((*a)->izq),t);
-        else    
-            insertarArbol(&((*a)->der),t);
+void insertarArbol(nodoA **a, nodoA *nuevo)
+{
+    if (*a != NULL)
+    {
+        if (strcmp((*a)->palabra, nuevo->palabra) > 0)
+            insertarArbol(&((*a)->izq), nuevo);
+        else
+            insertarArbol(&((*a)->der), nuevo);
     }
     else
-        *a = crearNodoA(t.palabra);
+        *a = nuevo;
+}
 
+void crearArbolDeListas(nodoA **a)
+{
+    FILE *buffer = fopen(FILE_PALABRAS, "rb");
+    termino aux;
+    nodoA *nuevo;
+    if (buffer != NULL)
+    {
+        while (fread(&aux,sizeof(termino),1,buffer) > 0)
+        {
+            nuevo = existePalabraArbol(*a, aux.palabra);
+            if (nuevo != NULL)
+            {
+                
+                insertarOrdenado(&((nuevo)->ocurrencias),aux.pos,aux.idDOC);
+            }
+            else
+            {
+                nuevo = crearNodoA(aux.palabra);
+                (*a)->frecuencia = devolverFrecuencia(nuevo->ocurrencias);
+                insertarArbol(&(*a),nuevo);
+                insertarOrdenado(&((nuevo)->ocurrencias),aux.pos,aux.idDOC);
+
+            }
+           
+    }
+    fclose(buffer);
+}
+}
+int devolverFrecuencia(nodoT *lista){
+    int i = 0;
+    while(lista != NULL){
+        i++;
+        lista = lista->sig;
+    }
+    return i;
+}
+nodoA *existePalabraArbol(nodoA *a, char p[])
+{
+
+    if (a != NULL)
+    {
+        if (strcmp(a->palabra, p) > 0)
+        {
+            if (strcmp(a->palabra, p) == 0)
+                return a;
+            return existePalabraArbol(a->der, p);
+        }
+        else if (strcmp(a->palabra, p) < 0)
+        {
+            if (strcmp(a->palabra, p) == 0)
+                return a;
+            return existePalabraArbol(a->izq, p);
+        }
+    }
+    else
+    {
+        return NULL;
+    }
+}
+void inorder(nodoA *a){
+    if(a != NULL){
+        inorder(a->izq);
+        printf("%s",a->palabra);
+        inorder(a->der);
+    }
 }
