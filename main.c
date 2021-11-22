@@ -1,10 +1,11 @@
 #include "main.h"
 int main(){
-    leerTexto(3);
+    //leerTexto(2);
     nodoA *arbolDeLista = NULL;
-    leerBin(&arbolDeLista); 
+    leerBin(&arbolDeLista); //Crea el arbol
     inorder(arbolDeLista);
-    return 0;
+    variosTerminos(arbolDeLista);
+  
 }
 
 

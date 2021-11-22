@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define FILE_PALABRAS "Palabras.bin"
+#define MAX_TXT 15
 // Estructuras de datos
 typedef struct {
     char palabra[20];
@@ -19,3 +20,4 @@ int esCaracterValido(char termino);
 char *convertirAChar(int id);
 void mostrarArchivoBIN();
 void mostradorTermino(termino t);
+int Levenshtein(char *s1, char *s2);

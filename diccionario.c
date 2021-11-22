@@ -22,7 +22,7 @@ void leerTexto(int id)
     char *idDoc = convertirAChar(id);
     FILE *buffer = fopen(idDoc, "rb");
 
-    free(idDoc); 
+    free(idDoc);
 
     fseek(buffer, 0, SEEK_END);
     int cantLetras = ftell(buffer) / sizeof(char);

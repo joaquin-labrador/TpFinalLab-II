@@ -1,5 +1,6 @@
 #include "arbol.h"
 
+
 nodoT *crearNodoT(int pos, int idDoc)
 {
     nodoT *nuevo = (nodoT *)malloc(sizeof(nodoT));
@@ -62,6 +63,7 @@ void insertarEnArbol(nodoA **a, termino t){
         else if(strcmpi((*a)->palabra,t.palabra) > 0)
             insertarEnArbol(&(*a)->izq,t);
         else{//srtcmpi == 0
+            printf("-%s-\n",t.palabra);
             insertarOrdenado(&(*a)->ocurrencias,t.pos,t.idDOC);
             (*a)->frecuencia += 1;
         } 
@@ -83,8 +85,10 @@ void leerBin (nodoA **a){
 void inorder(nodoA *a){
     if(a != NULL){
         inorder(a->izq);
+        printf("\n");
         mostrarPalabra(a);
         mostrarSubLista(a->ocurrencias);
+        printf("\n");
         inorder(a->der);
     }
 }
