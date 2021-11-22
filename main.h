@@ -1,3 +1,3 @@
-#include "usuario.c"
+#include "usuario.h"
 
 

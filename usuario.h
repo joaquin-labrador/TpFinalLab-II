@@ -1,4 +1,4 @@
-#include "arbol.c"
+#include "arbol.h"
 //Prototipados
 //1)
 int busquedaEnAlgunDoc (nodoA *a, char palabra[], int IdDoc);

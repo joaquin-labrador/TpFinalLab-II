@@ -1,6 +1,6 @@
 // Librerias y constantes
 
-#include "diccionario.c"
+#include "diccionario.h"
 
 typedef struct nodoT {
     int idDOC;
