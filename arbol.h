@@ -21,7 +21,7 @@ nodoA *crearNodoA(char palabra[]);
 void mostradorTermino(termino t);
 nodoA *existePalabraArbol(nodoA *a, char p[]);
 void inorder(nodoA *a);
-void insertarEnArbol(nodoA **a, termino t);
+int insertarEnArbol(nodoA **a, termino t);
 void leerBin (nodoA **a);
 void mostrarSubLista (nodoT *lista);
 void mostrarOcurrencia(nodoT *lista);

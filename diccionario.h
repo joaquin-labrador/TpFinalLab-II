@@ -5,6 +5,7 @@
 #include <string.h>
 #define FILE_PALABRAS "Palabras.bin"
 #define MAX_TXT 15
+#define min(a, b) (((a) < (b)) ? (a) : (b))
 // Estructuras de datos
 typedef struct {
     char palabra[20];

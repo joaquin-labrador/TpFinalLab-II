@@ -1,6 +1,5 @@
 #include "arbol.h"
 
-
 nodoT *crearNodoT(int pos, int idDoc)
 {
     nodoT *nuevo = (nodoT *)malloc(sizeof(nodoT));
@@ -20,70 +19,105 @@ nodoA *crearNodoA(char palabra[])
     nuevo->izq = NULL;
     return nuevo;
 }
+void insertarPorPos(nodoT **lista, nodoT *nuevo){
+    nodoT *act;
+    nodoT *ante;
+    if (*lista == NULL || (*lista)->pos > nuevo->pos)
+    {
+        nuevo->sig = *lista;
+        *lista = nuevo;
+    }
+    else
+    {
+        act = (*lista)->sig;
+        ante = *lista;
+        while (act != NULL && act->pos < nuevo->pos)
+        {
+            ante = act;
+            act = act->sig;
+        }
+        ante->sig = nuevo;
+        nuevo->sig = act;    
+    }
+}
 
 void insertarOrdenado(nodoT **lista, int pos, int idDoc)
 {
     nodoT *nuevo = crearNodoT(pos, idDoc);
     nodoT *act;
     nodoT *ante;
-    if (*lista == NULL)
+    if (*lista == NULL || (*lista)->idDOC > idDoc)
     {
+        nuevo->sig = *lista;
         *lista = nuevo;
     }
+    
     else
     {
-        if (*lista != NULL && (*lista)->idDOC < idDoc)
+        act = (*lista)->sig;
+        ante = *lista;
+        while (act != NULL && act->idDOC < idDoc && act->idDOC != idDoc)
         {
-            nuevo->sig = *lista;
-            *lista = nuevo;
+            
+            ante = act;
+            act = act->sig;
+            
         }
-        else
-        {
-            act = (*lista)->sig;
-            ante = *lista;
-            while (act != NULL && act->idDOC > idDoc)
-            {
-                ante = act;
-                act = act->sig;
-            }
-            ante->sig = act->sig;
-            act = nuevo;
+        if((*lista)->idDOC == nuevo->idDOC){
+                insertarPorPos(lista,nuevo);       
         }
-    }
-}
-void insertarEnArbol(nodoA **a, termino t){
-    if(*a == NULL){
-        *a = crearNodoA(t.palabra);
-        insertarOrdenado(&(*a)->ocurrencias,t.pos,t.idDOC);
-        (*a)->frecuencia += 1;
-    }
-    else{
-        if(strcmpi((*a)->palabra,t.palabra) < 0)
-            insertarEnArbol(&(*a)->der,t);
-        else if(strcmpi((*a)->palabra,t.palabra) > 0)
-            insertarEnArbol(&(*a)->izq,t);
-        else{//srtcmpi == 0
-            printf("-%s-\n",t.palabra);
-            insertarOrdenado(&(*a)->ocurrencias,t.pos,t.idDOC);
-            (*a)->frecuencia += 1;
+        else{
+            ante->sig = nuevo;
+            nuevo->sig = act;
         } 
     }
 }
-void leerBin (nodoA **a){
-    FILE *buffer = fopen(FILE_PALABRAS,"rb");
+int insertarEnArbol(nodoA **a, termino t)
+{
+    if (*a == NULL)
+    {
+        nodoA *aux;
+        aux = crearNodoA(t.palabra);
+        *a = aux; //aca se inserta
+        insertarOrdenado(&(*a)->ocurrencias, t.pos, t.idDOC);
+        (*a)->frecuencia++;
+    }
+    else
+    {
+
+        if (strcmpi((*a)->palabra, t.palabra) < 0)
+            return insertarEnArbol(&(*a)->der, t);
+        else if (strcmpi((*a)->palabra, t.palabra) > 0)
+            return insertarEnArbol(&(*a)->izq, t);
+        else
+        { //srtcmpi == 0
+
+            insertarOrdenado(&(*a)->ocurrencias, t.pos, t.idDOC);
+            (*a)->frecuencia++;
+            return -1;
+        }
+    }
+}
+void leerBin(nodoA **a)
+{
+    FILE *buffer = fopen(FILE_PALABRAS, "rb");
     termino aux;
-    if(buffer){
-        while (fread(&aux,sizeof(termino),1,buffer) > 0)
+    if (buffer)
+    {
+        while (fread(&aux, sizeof(termino), 1, buffer) > 0)
         {
-            insertarEnArbol(a,aux);
+            mostradorTermino(aux);
+            insertarEnArbol(a, aux);
         }
         fclose(buffer);
     }
 }
 
 //Mostadores
-void inorder(nodoA *a){
-    if(a != NULL){
+void inorder(nodoA *a)
+{
+    if (a != NULL)
+    {
         inorder(a->izq);
         printf("\n");
         mostrarPalabra(a);
@@ -93,22 +127,26 @@ void inorder(nodoA *a){
     }
 }
 
-void mostrarSubLista (nodoT *lista){
+void mostrarSubLista(nodoT *lista)
+{
     printf("-- Lista de repeticiones --\n");
-    while(lista != NULL){
+    while (lista != NULL)
+    {
         mostrarOcurrencia(lista);
         lista = lista->sig;
     }
 }
-void mostrarOcurrencia(nodoT *lista){
+void mostrarOcurrencia(nodoT *lista)
+{
     printf("-------------------------\n");
-    printf("-Id doc %d\n",lista->idDOC);
-    printf("-Pos %d\n",lista->pos);
+    printf("-Id doc %d\n", lista->idDOC);
+    printf("-Pos %d\n", lista->pos);
     printf("-------------------------\n");
 }
-void mostrarPalabra(nodoA *a){
+void mostrarPalabra(nodoA *a)
+{
     printf("-------------------------\n");
-    printf("-Palabra - %s - \n",a->palabra);
-    printf("-Frecuencia %d\n",a->frecuencia);
+    printf("-Palabra - %s - \n", a->palabra);
+    printf("-Frecuencia %d\n", a->frecuencia);
     printf("-------------------------\n");
 }

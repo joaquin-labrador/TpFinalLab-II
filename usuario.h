@@ -9,3 +9,7 @@ void posAndId(nodoT *a);
 //3)
 int preguntarId();
 void variosTerminos(nodoA *a);
+//6)
+void distanciaLevenshtein(nodoA *a,char palabra[]);
+int existe(nodoA *a, char palabra[]);
+void distancia(nodoA *a,char palabra[]);
