@@ -163,12 +163,19 @@ char *preguntarPalabra(nodoA *a) {
     return palabra;
 }
 int preguntarId() {
+    int scanValido;
     int i = 0;
     do {
         printf("\n\n\t\tIngrese documento\n");
         printf("\t\t->");
-        scanf("%d", &i);
+        fflush(stdin);
+        if (!scanf("%d", &i) || (i > MAX_TXT || i < 1)) {
+            i = 0;  // forzamos la entrada al dowhile
+            // TODO: HACER FUNCION QUE VERIFIQUE SI EL ID DEL DOC EXISTE EN EL DICCIONARIO!
+            printf("Ingrese un ID de documento valido\n");
+            system("pause");
+        }
         system("cls");
-    } while (i > MAX_TXT && i <= 0);
+    } while (i > MAX_TXT || i < 1);
     return i;
 }
