@@ -128,7 +128,7 @@ void inorder(nodoA *a)
 
 void mostrarSubLista(nodoT *lista)
 {
-    printf("-- Lista de repeticiones --\n");
+    printf("\n\n\t\t-- Lista de repeticiones --\n");
     while (lista != NULL)
     {
         mostrarOcurrencia(lista);
@@ -137,15 +137,15 @@ void mostrarSubLista(nodoT *lista)
 }
 void mostrarOcurrencia(nodoT *lista)
 {
-    printf("-------------------------\n");
-    printf("-Id doc %d\n", lista->idDOC);
-    printf("-Pos %d\n", lista->pos);
-    printf("-------------------------\n");
+    printf("\n\n\t\t-------------------------\n");
+    printf("\n\n\t\t-Id doc %d\n", lista->idDOC);
+    printf("\n\n\t\t-Pos %d\n", lista->pos);
+    printf("\n\n\t\t-------------------------\n");
 }
 void mostrarPalabra(nodoA *a)
 {
-    printf("-------------------------\n");
-    printf("-Palabra - %s - \n", a->palabra);
-    printf("-Frecuencia %d\n", a->frecuencia);
-    printf("-------------------------\n");
+    printf("\n\n\t\t-------------------------\n");
+    printf("\n\n\t\t-Palabra - %s - \n", a->palabra);
+    printf("\n\n\t\t-Frecuencia %d\n", a->frecuencia);
+    printf("\n\n\t\t-------------------------\n");
 }
