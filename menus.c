@@ -1,6 +1,5 @@
 #include "menus.h"
-void menuMain(){
-    
+void menuMain() {
     printf("\t\t\t--[MOTOR DE BUSQUEDA DE PALABRAS]--\n");
     printf("\t\t---------------------------------------------------------\n");
     printf("\t\t(1) Buscar un termino en un documento\n");
@@ -13,9 +12,8 @@ void menuMain(){
     printf("\t\t(6) Ver el arbol\n");
     printf("\t\t---------------------------------------------------------\n");
     printf("\t\t(7) Salir\n");
-
 }
-void menuVisualizacionArbol(){
+void menuVisualizacionArbol() {
     printf("--\t\t\t[SELECCIONES QUE ALGORITMO\n\t\t\tDE VISUALIZACION DESEA EJECUTAR]\n");
     printf("\t\t-----------------------------------------\n");
     printf("\t\t(1) Preorder\n");

@@ -1,34 +1,25 @@
 #include "usuario.h"
 
-//Punto 1
+// Punto 1
 
-int busquedaEnAlgunDoc(nodoA *a, char palabra[], int IdDoc)
-{
-    if (a != NULL)
-    {
-        if (strcmpi(a->palabra, palabra) == 0)
-        {
+int busquedaEnAlgunDoc(nodoA *a, char palabra[], int IdDoc) {
+    if (a != NULL) {
+        if (strcmpi(a->palabra, palabra) == 0) {
             int rep = repeticiones(a->ocurrencias, IdDoc);
             return rep;
-        }
-        else if (strcmpi(a->palabra, palabra) < 0)
+        } else if (strcmpi(a->palabra, palabra) < 0)
             return busquedaEnAlgunDoc(a->der, palabra, IdDoc);
         else
             return busquedaEnAlgunDoc(a->izq, palabra, IdDoc);
-    }
-    else
-    {
-        return -1; // Si la palabra no existe
+    } else {
+        return -1;  // Si la palabra no existe
     }
 }
 
-int repeticiones(nodoT *terminos, int id)
-{
+int repeticiones(nodoT *terminos, int id) {
     int i = 0;
-    while (terminos != NULL)
-    {
-        if (terminos->idDOC == id)
-        {
+    while (terminos != NULL) {
+        if (terminos->idDOC == id) {
             i++;
         }
         terminos = terminos->sig;
@@ -36,32 +27,24 @@ int repeticiones(nodoT *terminos, int id)
     return i;
 }
 
-//Punto 2
+// Punto 2
 
-int repiticionesTotales(nodoA *a, char palabra[])
-{
-    if (a != NULL)
-    {
-        if (strcmpi(a->palabra, palabra) == 0)
-        {
+int repiticionesTotales(nodoA *a, char palabra[]) {
+    if (a != NULL) {
+        if (strcmpi(a->palabra, palabra) == 0) {
             posAndId(a->ocurrencias);
             return a->frecuencia;
-        }
-        else if (strcmpi(a->palabra, palabra) < 0)
+        } else if (strcmpi(a->palabra, palabra) < 0)
             return repiticionesTotales(a->der, palabra);
         else
             return repiticionesTotales(a->izq, palabra);
-    }
-    else
-    {
-        return -1; // Si la palabra no existe
+    } else {
+        return -1;  // Si la palabra no existe
     }
 }
-void posAndId(nodoT *a)
-{
+void posAndId(nodoT *a) {
     printf("\t\t- Posicion/es y Documento/s de la palabra buscada-\n");
-    while (a != NULL)
-    {
+    while (a != NULL) {
         printf("-----------------\n");
         printf("\n\n\t\tPosicion %d \n", a->pos);
         printf("\n\n\t\tDocumento %d \n", a->idDOC);
@@ -70,16 +53,14 @@ void posAndId(nodoT *a)
     }
 }
 
-//Punto 3
+// Punto 3
 
-void variosTerminos(nodoA *a)
-{
+void variosTerminos(nodoA *a) {
     int id = preguntarId();
     char s;
     char termino[30];
     int repeticiones = 0;
-    do
-    {
+    do {
         printf("\n\n\t\tIngrese palabra a buscar en el documento %d\n", id);
         printf("\t\t->");
         fflush(stdin);
@@ -96,51 +77,69 @@ void variosTerminos(nodoA *a)
         system("cls");
     } while (s == 's');
 }
-//Punto 5
 
-//punto 6
-void distanciaLevenshtein(nodoA *a, char palabra[])
-{
-    if (a != NULL)
-    {
-        if (!existeTermino(a, palabra)){
+// Punto 5
+void palabraMayorFrecuencia(nodoA *a, int idDoc, PalabraFrecuente *res) {
+    res->idDoc = idDoc;
+    char *aux = (char *)calloc(sizeof(char), 21);
+    if (a != NULL) {
+        palabraMayorFrecuencia(a->izq, idDoc, res);
+        palabraMayorFrecuencia(a->der, idDoc, res);
+        strcpy(aux, a->palabra);
+        if (compararOcurrencias(a->ocurrencias, res)) {
+            strcpy(res->palabra, aux);
+        }
+    }
+    free(aux);
+}
+
+/*
+    Retorna 1 si la palabra es mas frecuente que la del valor del parametro, además modifica la estructura.
+    Retorna 0 si la palabra es menos frecuente que la del valor del parametro. No se ve alterada la estructura.
+*/
+int compararOcurrencias(nodoT *ocurrencia, PalabraFrecuente *res) {
+    int contadorAuxiliar = 0;
+    while (ocurrencia != NULL) {
+        if (ocurrencia->idDOC == res->idDoc) {
+            contadorAuxiliar++;
+        }
+        ocurrencia = ocurrencia->sig;
+    }
+    if (res->frecuencia < contadorAuxiliar) {
+        res->frecuencia = contadorAuxiliar;
+        return 1;
+    }
+    return 0;
+}
+
+// punto 6
+void distanciaLevenshtein(nodoA *a, char palabra[]) {
+    if (a != NULL) {
+        if (!existeTermino(a, palabra)) {
             printf("\n\n\t\tQuisite decir\n");
             distancia(a, palabra);
         }
     }
 }
-int existeTermino(nodoA *a, char palabra[])
-{
-    if (a != NULL)
-    {
-        if (strcmpi(a->palabra, palabra) == 0)
-        {
+int existeTermino(nodoA *a, char palabra[]) {
+    if (a != NULL) {
+        if (strcmpi(a->palabra, palabra) == 0) {
             return 1;
-        }
-        else
-        {
-            if (strcmpi(a->palabra, palabra) > 0)
-            {
+        } else {
+            if (strcmpi(a->palabra, palabra) > 0) {
                 return existeTermino(a->izq, palabra);
-            }
-            else
-            {
+            } else {
                 return existeTermino(a->der, palabra);
             }
         }
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
-void distancia(nodoA *a, char palabra[])
-{
-    if (a != NULL)
-    {
+void distancia(nodoA *a, char palabra[]) {
+    if (a != NULL) {
         int distanciaLev = Levenshtein(a->palabra, palabra);
-        if (distanciaLev <= 3)
-        {
+        if (distanciaLev <= 3) {
             printf("\t\t-> %s \n", a->palabra);
         }
         distancia(a->izq, palabra);
@@ -148,31 +147,24 @@ void distancia(nodoA *a, char palabra[])
     }
 }
 
-//Extras
-char *preguntarPalabra(nodoA *a)
-{
+// Extras
+char *preguntarPalabra(nodoA *a) {
     char *palabra = (char *)calloc(sizeof(char), 20);
-    do
-    {
-        
+    do {
         printf("\n\n\t\tIngrese palabra a buscar\n");
         fflush(stdin);
         printf("\t\t->");
         gets(palabra);
         tolower(palabra[0]);
-        if (!existeTermino(a, palabra))
-        {
-        
-            distanciaLevenshtein(a,palabra);       
+        if (!existeTermino(a, palabra)) {
+            distanciaLevenshtein(a, palabra);
         }
     } while (!existeTermino(a, palabra));
     return palabra;
 }
-int preguntarId()
-{
+int preguntarId() {
     int i = 0;
-    do
-    {
+    do {
         printf("\n\n\t\tIngrese documento\n");
         printf("\t\t->");
         scanf("%d", &i);

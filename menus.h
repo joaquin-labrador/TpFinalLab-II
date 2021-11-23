@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdbool.h>
+#pragma once
 #include <conio.h>
+#include <stdio.h>
 void menuMain();
 void menuVisualizacionArbol();
