@@ -106,7 +106,6 @@ void leerBin(nodoA **a)
     {
         while (fread(&aux, sizeof(termino), 1, buffer) > 0)
         {
-            mostradorTermino(aux);
             insertarEnArbol(a, aux);
         }
         fclose(buffer);

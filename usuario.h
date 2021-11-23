@@ -11,5 +11,7 @@ int preguntarId();
 void variosTerminos(nodoA *a);
 //6)
 void distanciaLevenshtein(nodoA *a,char palabra[]);
-int existe(nodoA *a, char palabra[]);
-void distancia(nodoA *a,char palabra[]);
+int existeTermino(nodoA *a, char palabra[]);
+void distancia(nodoA *a, char palabra[]);
+
+char *preguntarPalabra();

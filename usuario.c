@@ -1,7 +1,7 @@
 #include "usuario.h"
 
 //Punto 1
-//TODO: HACER TOLOWER A LA PALABRA
+
 int busquedaEnAlgunDoc(nodoA *a, char palabra[], int IdDoc)
 {
     if (a != NULL)
@@ -29,9 +29,6 @@ int repeticiones(nodoT *terminos, int id)
     {
         if (terminos->idDOC == id)
         {
-            if (i == 0)
-                printf("La palabra ingresada se encuentra en la/s posicion/es del documento %d: \n", id);
-            printf("    %d-\n", terminos->pos);
             i++;
         }
         terminos = terminos->sig;
@@ -74,29 +71,23 @@ void posAndId(nodoT *a)
 }
 
 //Punto 3
-int preguntarId()
-{
-    int i = 0;
-    do
-    {
-        printf("De que documento desea buscar varios terminos\n");
-        scanf("%d", &i);
-        system("cls");
-    } while (i > MAX_TXT && i <= 0);
-    return i;
-}
+
+
+
 void variosTerminos(nodoA *a)
 {
     int id = preguntarId();
     char s;
     char termino[30];
-    printf("Ingrese palabra a buscar en el documento %d\n", &id);
+    int repeticiones = 0;
+    printf("Ingrese palabra a buscar en el documento %d\n", id);
     do
     {
         printf("-: ");
         fflush(stdin);
         gets(termino);
-        busquedaEnAlgunDoc(a, termino, id);
+        repeticiones = busquedaEnAlgunDoc(a, termino, id);
+        printf("La palabra %s se repite %d vez / veces en el documento %d\n",termino,repeticiones,id);
         system("pause");
         system("cls");
         printf("Desea continuar buscando terminos en este documento\n");
@@ -112,8 +103,9 @@ void distanciaLevenshtein(nodoA *a, char palabra[])
 {
     if (a != NULL)
     {
-       if (existe(a, palabra))
+       if (existeTermino(a, palabra))
         {
+           printf("La palabra ingresada, existe en el arbol\n");
         }
         else
         {
@@ -123,7 +115,7 @@ void distanciaLevenshtein(nodoA *a, char palabra[])
     }
   
 }
-int existe(nodoA *a, char palabra[])
+int existeTermino(nodoA *a, char palabra[])
 {
     if (a != NULL)
     {
@@ -135,10 +127,10 @@ int existe(nodoA *a, char palabra[])
         {
             if (strcmpi(a->palabra, palabra) > 0)
             {
-                return existe(a->der, palabra);
+                return existeTermino(a->der, palabra);
             }
             else{
-                return existe(a->izq, palabra);
+                return existeTermino(a->izq, palabra);
             }
         }
     }
@@ -148,16 +140,38 @@ int existe(nodoA *a, char palabra[])
     }
 }
 void distancia(nodoA *a, char palabra[])
-{
+{   
     if (a != NULL)
     {
         int distanciaLev = Levenshtein(a->palabra, palabra);
         if (distanciaLev <= 3)
         {
-
-            printf(" %s \n", a->palabra);
+            printf("-> %s \n", a->palabra);
         }
         distancia(a->izq, palabra);
         distancia(a->der, palabra);
     }
+
+    
+}
+
+//Extras 
+char *preguntarPalabra(){
+    char *palabra=(char *)calloc(sizeof(char),20);
+    printf("Ingrese palabra a buscar\n");
+    fflush(stdin);
+    gets(palabra);
+    tolower(*palabra);
+    return palabra;
+}
+int preguntarId()
+{
+    int i = 0;
+    do
+    {
+        printf("Ingrese documento\n");
+        scanf("%d", &i);
+        system("cls");
+    } while (i > MAX_TXT && i <= 0);
+    return i;
 }
