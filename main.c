@@ -46,18 +46,21 @@ int main() {
         system("cls");
         switch (opcion) {
             case 1:
-                repeticiones = busquedaEnAlgunDoc(arbolDeLista, preguntarPalabra(arbolDeLista), preguntarId(arbolDeLista));
-                if (repeticiones == 0) {
-                    printf("\n\n\t\tLa palabra no existe en el documento!\n");
-                } else {
-                    printf("\n\n\t\tLa palabra se repite %d %s en el documento ingresado\n", repeticiones, repeticiones == 1 ? "vez" : "veces");
-                }
+                id = preguntarId(arbolDeLista);
+                do {
+                    repeticiones = busquedaEnAlgunDoc(arbolDeLista, preguntarPalabra(arbolDeLista, id), id);
+                    if (repeticiones == 0) {
+                        printf("\n\n\t\tLa palabra no existe en el documento!\n");
+                    }
+                } while (repeticiones == 0);
+
+                printf("\n\n\t\tLa palabra se repite %d %s en el documento ingresado\n", repeticiones, repeticiones == 1 ? "vez" : "veces");
                 printf("\t\t");
                 system("pause");
                 system("cls");
                 break;
             case 2:
-                repeticiones = repiticionesTotales(arbolDeLista, preguntarPalabra(arbolDeLista));
+                repeticiones = repiticionesTotales(arbolDeLista, preguntarPalabra(arbolDeLista, -1));
                 printf("\n\n\t\tLa palabra ingresada se repite %d vez / veces en todos los archivos\n", repeticiones);
                 printf("\t\t");
                 system("pause");

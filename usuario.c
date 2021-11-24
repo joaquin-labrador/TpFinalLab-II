@@ -113,14 +113,37 @@ int compararOcurrencias(nodoT *ocurrencia, PalabraFrecuente *res) {
 }
 
 // punto 6
-void distanciaLevenshtein(nodoA *a, char palabra[]) {
+void distanciaLevenshtein(nodoA *a, char palabra[], int id) {
     if (a != NULL) {
-        if (!existeTermino(a, palabra)) {
+        if (id != -1) {
+            if (!existeTermino(a, palabra)) {
+                printf("\n\n\t\tQuisite decir\n");
+                distancia(a, palabra, id);
+            }
+        } else {
             printf("\n\n\t\tQuisite decir\n");
-            distancia(a, palabra);
+            distancia(a, palabra, id);
         }
     }
 }
+
+int existePalabraDocumento(nodoA *a, char palabra[], int id) {
+    if (a != NULL) {
+        if (id != -1) {
+            if (strcmpi(a->palabra, palabra) == 0) {
+                return verificarIdEnLista(a->ocurrencias, id);
+            }
+            if (strcmpi(a->palabra, palabra) > 0) {
+                return existePalabraDocumento(a->izq, palabra, id);
+            } else {
+                return existePalabraDocumento(a->der, palabra, id);
+            }
+        } else {
+            return -1;
+        }
+    }
+}
+
 int existeTermino(nodoA *a, char palabra[]) {
     if (a != NULL) {
         if (strcmpi(a->palabra, palabra) == 0) {
@@ -136,19 +159,24 @@ int existeTermino(nodoA *a, char palabra[]) {
         return 0;
     }
 }
-void distancia(nodoA *a, char palabra[]) {
+void distancia(nodoA *a, char palabra[], int id) {
     if (a != NULL) {
         int distanciaLev = Levenshtein(a->palabra, palabra);
-        if (distanciaLev <= 3) {
-            printf("\t\t-> %s \n", a->palabra);
+        if (id != -1) {
+            if (distanciaLev <= 3 && existePalabraDocumento(a, a->palabra, id)) {
+                printf("\t\t-> %s \n", a->palabra);
+            }
+        } else {
+            if (distanciaLev <= 3) {
+                printf("\t\t-> %s \n", a->palabra);
+            }
         }
-        distancia(a->izq, palabra);
-        distancia(a->der, palabra);
+        distancia(a->izq, palabra, id);
+        distancia(a->der, palabra, id);
     }
 }
-
 // Extras
-char *preguntarPalabra(nodoA *a) {
+char *preguntarPalabra(nodoA *a, int id) {
     char *palabra = (char *)calloc(sizeof(char), 20);
     do {
         printf("\n\n\t\tIngrese palabra a buscar\n");
@@ -157,7 +185,7 @@ char *preguntarPalabra(nodoA *a) {
         gets(palabra);
         tolower(palabra[0]);
         if (!existeTermino(a, palabra)) {
-            distanciaLevenshtein(a, palabra);
+            distanciaLevenshtein(a, palabra, id);
         }
     } while (!existeTermino(a, palabra));
     return palabra;

@@ -22,12 +22,12 @@ void palabraMayorFrecuencia(nodoA *a, int idDoc, PalabraFrecuente *res);
 int compararOcurrencias(nodoT *ocurrencia, PalabraFrecuente *res);
 
 // 6)
-void distanciaLevenshtein(nodoA *a, char palabra[]);
+void distanciaLevenshtein(nodoA *a, char palabra[], int id);
 int existeTermino(nodoA *a, char palabra[]);
-void distancia(nodoA *a, char palabra[]);
+void distancia(nodoA *a, char palabra[], int id);
+int existePalabraDocumento(nodoA *a, char palabra[], int id);
 
-char *preguntarPalabra();
-
+char *preguntarPalabra(nodoA *a, int id);
 
 int verificarIdIngresado(nodoA *a, int id);
 int verificarIdEnLista(nodoT *lista, int id);
