@@ -113,20 +113,16 @@ int compararOcurrencias(nodoT *ocurrencia, PalabraFrecuente *res) {
 }
 
 // punto 6
+// Recibe arbol, palabra e id, si la id es -1 no filtra levenshtein por id del doc
 void distanciaLevenshtein(nodoA *a, char palabra[], int id) {
     if (a != NULL) {
-        if (id != -1) {
-            if (!existeTermino(a, palabra)) {
-                printf("\n\n\t\tQuisite decir\n");
-                distancia(a, palabra, id);
-            }
-        } else {
+        if (!existeTermino(a, palabra)) {
             printf("\n\n\t\tQuisite decir\n");
             distancia(a, palabra, id);
         }
     }
 }
-
+// Verifica si una palabra existe en algun documento, recibe la palabra, el arbol y la id del documento.
 int existePalabraDocumento(nodoA *a, char palabra[], int id) {
     if (a != NULL) {
         if (id != -1) {
@@ -159,6 +155,7 @@ int existeTermino(nodoA *a, char palabra[]) {
         return 0;
     }
 }
+// Recibe id del doc, si la id es -1 no filtra levenshtein por documento
 void distancia(nodoA *a, char palabra[], int id) {
     if (a != NULL) {
         int distanciaLev = Levenshtein(a->palabra, palabra);
@@ -176,6 +173,10 @@ void distancia(nodoA *a, char palabra[], int id) {
     }
 }
 // Extras
+/*
+    Recibe el arbol y una id, si la id es -1 hara que levenshtein no filtre por misma id doc
+    Si recibe una id distinta a -1, o sea se pasa una id valida de doc, hara que haga sugerencias >= a 3 con palabras del mismo documento
+*/
 char *preguntarPalabra(nodoA *a, int id) {
     char *palabra = (char *)calloc(sizeof(char), 20);
     do {
