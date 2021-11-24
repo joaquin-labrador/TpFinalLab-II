@@ -101,23 +101,39 @@ void inorder(nodoA *a) {
         inorder(a->der);
     }
 }
-
+void preorder(nodoA  *a){
+    if(a != NULL){
+        mostrarPalabra(a);
+        mostrarSubLista(a->ocurrencias);
+        preorder(a->izq);
+        preorder(a->der);
+    }
+}
+void postorder(nodoA *a){
+    if(a != NULL){
+      
+        postorder(a->izq);
+        postorder(a->der);
+        mostrarPalabra(a);
+        mostrarSubLista(a->ocurrencias);
+    }
+}
 void mostrarSubLista(nodoT *lista) {
-    printf("\n\n\t\t-- Lista de repeticiones --\n");
+    printf("\n\t\t-- Lista de repeticiones --\n");
     while (lista != NULL) {
         mostrarOcurrencia(lista);
         lista = lista->sig;
     }
 }
 void mostrarOcurrencia(nodoT *lista) {
-    printf("\n\n\t\t-------------------------\n");
-    printf("\n\n\t\t-Id doc %d\n", lista->idDOC);
-    printf("\n\n\t\t-Pos %d\n", lista->pos);
-    printf("\n\n\t\t-------------------------\n");
+    printf("\t\t-------------------------\n");
+    printf("\t\t-Id doc %d\n", lista->idDOC);
+    printf("\t\t-Pos %d\n", lista->pos);
+    printf("\t\t-------------------------\n");
 }
 void mostrarPalabra(nodoA *a) {
-    printf("\n\n\t\t-------------------------\n");
-    printf("\n\n\t\t-Palabra - %s - \n", a->palabra);
-    printf("\n\n\t\t-Frecuencia %d\n", a->frecuencia);
-    printf("\n\n\t\t-------------------------\n");
+    printf("\n\t\t-------------------------\n");
+    printf("\t\t-Palabra - %s - \n", a->palabra);
+    printf("\t\t-Frecuencia %d\n", a->frecuencia);
+    printf("\t\t-------------------------\n");
 }

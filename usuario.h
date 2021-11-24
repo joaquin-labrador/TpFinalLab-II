@@ -1,5 +1,6 @@
 #pragma once
 #include "arbol.h"
+#include "menus.h"
 typedef struct PalabraFrecuente {
     char palabra[20];
     int frecuencia;
@@ -26,3 +27,12 @@ int existeTermino(nodoA *a, char palabra[]);
 void distancia(nodoA *a, char palabra[]);
 
 char *preguntarPalabra();
+
+
+int verificarIdIngresado(nodoA *a, int id);
+int verificarIdEnLista(nodoT *lista, int id);
+int verficadorDeOpcion(int op);
+int lanzadorDeVisualizacion(nodoA *a, int op);
+
+int consulta();
+void creacionBinario();

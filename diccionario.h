@@ -23,3 +23,4 @@ char *convertirAChar(int id);
 void mostrarArchivoBIN();
 void mostradorTermino(termino t);
 int Levenshtein(char *s1, char *s2);
+int verificarIntegridad();

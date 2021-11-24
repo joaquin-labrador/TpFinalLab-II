@@ -26,3 +26,5 @@ void leerBin(nodoA **a);
 void mostrarSubLista(nodoT *lista);
 void mostrarOcurrencia(nodoT *lista);
 void mostrarPalabra(nodoA *a);
+void preorder(nodoA  *a);
+void postorder(nodoA *a);

@@ -47,7 +47,6 @@ void separarChar(char palabra[], int id, int cantLetras) {
         } else if (flag) {  // Si lee dos caracteres invalidos seguidos no se entra
             aux[contador] = '\0';
             escribirTermino(aux, id, pos);
-            printf("%s-- %d\n", aux, contador);
             pos++;
             contador = 0;
             flag = 0;
@@ -139,4 +138,21 @@ int Levenshtein(char *s1, char *s2) {
     res = m[t2 * ancho + t1];
     free(m);
     return (res);
+}
+
+int verificarIntegridad(){
+    FILE *buffer = fopen(FILE_PALABRAS,"rb");
+    if(buffer != NULL)//Hay archivo
+        return 1;
+    return 0;
+}
+void creacionBinario(){
+    printf("\n\n\t\t No se a econtrado diccionario, Se esta cargando...\n");
+    for(int i = 1 ; i < MAX_TXT ; i++){
+        leerTexto(i);
+    }
+       //Se rompe aca
+        printf("\t\t");
+        system("pause");
+        system("cls");
 }

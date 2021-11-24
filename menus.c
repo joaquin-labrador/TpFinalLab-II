@@ -14,10 +14,11 @@ void menuMain() {
     printf("\t\t(7) Salir\n");
 }
 void menuVisualizacionArbol() {
-    printf("--\t\t\t[SELECCIONES QUE ALGORITMO\n\t\t\tDE VISUALIZACION DESEA EJECUTAR]\n");
+    printf("--\t\t\t[SELECCIONES QUE ALGORITMO DE VISUALIZACION DESEA EJECUTAR]\n");
     printf("\t\t-----------------------------------------\n");
     printf("\t\t(1) Preorder\n");
     printf("\t\t(2) Inorder\n");
-    printf("\t\t(3) Preorder\n");
+    printf("\t\t(3) Postorder\n");
+    printf("\t\t(4) Regresar al menu principal\n");
     printf("\t\t-----------------------------------------\n");
 }
