@@ -45,10 +45,10 @@ int repiticionesTotales(nodoA *a, char palabra[]) {
 void posAndId(nodoT *a) {
     printf("\t\t- Posicion/es y Documento/s de la palabra buscada-\n");
     while (a != NULL) {
-        printf("-----------------\n");
-        printf("\n\n\t\tPosicion %d \n", a->pos);
-        printf("\n\n\t\tDocumento %d \n", a->idDOC);
-        printf("-----------------\n");
+        printf("\t\t-----------------\n");
+        printf("\t\tPosicion %d \n", a->pos);
+        printf("\t\tDocumento %d \n", a->idDOC);
+        printf("\t\t-----------------\n");
         a = a->sig;
     }
 }

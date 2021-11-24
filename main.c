@@ -61,7 +61,9 @@ int main()
             break;
         case 5:
             palabraMayorFrecuencia(arbolDeLista, preguntarId(arbolDeLista), &res);
+            //TODO: ESTITICA DE ESTE MOSTRADOR
             printf("P: %s |F:  %d |ID:  %d", res.palabra, res.frecuencia, res.idDoc);
+
             printf("\t\t");
             system("pause");
             system("cls");
