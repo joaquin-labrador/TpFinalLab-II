@@ -10,7 +10,11 @@ termino crearTermino(char palabra[], int idDoc, int pos) {
 void escribirTermino(char palabra[], int idDoc, int pos) {
     FILE *buff = fopen(FILE_PALABRAS, "ab");
     termino t = crearTermino(palabra, idDoc, pos);
-    fwrite(&t, sizeof(termino), 1, buff);
+    if (buff != NULL) {
+        fwrite(&t, sizeof(termino), 1, buff);
+    } else {
+        exit(1);
+    }
     fclose(buff);
 }
 
@@ -18,18 +22,21 @@ void leerTexto(int id) {
     int i = 0;
     char *idDoc = convertirAChar(id);
     FILE *buffer = fopen(idDoc, "rb");
-
     free(idDoc);
 
-    fseek(buffer, 0, SEEK_END);
-    int cantLetras = ftell(buffer) / sizeof(char);
-    fseek(buffer, 0, SEEK_SET);
-    char *texto = (char *)calloc(sizeof(char), cantLetras);
-    strcpy(texto, " ");
-    if (buffer != NULL) {
+    if (buffer == NULL) {
+        fclose(buffer);
+        return;
+    } else {
+        fseek(buffer, 0, SEEK_END);
+        int cantLetras = ftell(buffer) / sizeof(char);
+        fseek(buffer, 0, SEEK_SET);
+        char *texto = (char *)calloc(sizeof(char), cantLetras);
+        strcpy(texto, " ");
         while (fread(&texto[i], sizeof(char), 1, buffer) > 0) {
             i++;
         }
+        fclose(buffer);
         separarChar(texto, id, cantLetras);
     }
 }
@@ -140,19 +147,15 @@ int Levenshtein(char *s1, char *s2) {
     return (res);
 }
 
-int verificarIntegridad(){
-    FILE *buffer = fopen(FILE_PALABRAS,"rb");
-    if(buffer != NULL)//Hay archivo
+int verificarIntegridad() {
+    FILE *buffer = fopen(FILE_PALABRAS, "rb");
+    if (buffer != NULL) {  // Hay archivo
+        fclose(buffer);
         return 1;
-    return 0;
-}
-void creacionBinario(){
-    printf("\n\n\t\t No se a econtrado diccionario, Se esta cargando...\n");
-    for(int i = 1 ; i < MAX_TXT ; i++){
-        leerTexto(i);
+    } else {
+        fclose(buffer);
+        buffer = fopen(FILE_PALABRAS, "wb");
+        fclose(buffer);
+        return 0;
     }
-       //Se rompe aca
-        printf("\t\t");
-        system("pause");
-        system("cls");
 }

@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "menus.h"
 #define FILE_PALABRAS "Palabras.bin"
 #define MAX_TXT 15
 #define min(a, b) (((a) < (b)) ? (a) : (b))

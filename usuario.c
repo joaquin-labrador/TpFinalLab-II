@@ -169,107 +169,100 @@ int preguntarId(nodoA *a) {
         printf("\n\n\t\tIngrese documento\n");
         printf("\t\t->");
         fflush(stdin);
-        if (!scanf("%d", &i) || (i > MAX_TXT || i < 1 ) || verificarIdIngresado(a,i) != 1) {
+        if (!scanf("%d", &i) || (i > MAX_TXT || i < 1) || verificarIdIngresado(a, i) != 1) {
             i = 0;  // forzamos la entrada al dowhile
             printf("\t\tIngrese un ID de documento valido\n");
-             printf("\t\t");
+            printf("\t\t");
             system("pause");
         }
         system("cls");
     } while (i > MAX_TXT || i < 1);
     return i;
 }
-int verificarIdIngresado(nodoA *a, int id){
-    if(a != NULL){
-        verificarIdIngresado(a->izq,id);
-        verificarIdIngresado(a->der,id);
-        if(verificarIdEnLista(a->ocurrencias,id) == 1){
+int verificarIdIngresado(nodoA *a, int id) {
+    if (a != NULL) {
+        verificarIdIngresado(a->izq, id);
+        verificarIdIngresado(a->der, id);
+        if (verificarIdEnLista(a->ocurrencias, id) == 1) {
             return 1;
         }
-    }
-    else{
+    } else {
         return 0;
     }
 }
-int verificarIdEnLista(nodoT *lista, int id){
-    while(lista != NULL){
-        if(lista->idDOC == id){
+int verificarIdEnLista(nodoT *lista, int id) {
+    while (lista != NULL) {
+        if (lista->idDOC == id) {
             return 1;
         }
         lista = lista->sig;
     }
     return 0;
 }
-int lanzadorDeVisualizacion(nodoA *a, int op){
-    if(op <= 0 || op > 4)
-        op = verficadorDeOpcion(op);
-    
-    switch (op)
-    {
-    case 1:
-        preorder(a);
-        printf("\t\t");
-        system("pause");
-        system("cls");
-        return 0;
-        break;
-    case 2:
-        inorder(a);
-        printf("\t\t");
-        system("pause");
-        system("cls");
-        return 0;
-        break;
-    case 3:
-        postorder(a);
-        printf("\t\t");
-        system("pause");
-        system("cls");
-        return 0;
-    case 4:
-        return 1;
-    default:
-        break;
+int lanzadorDeVisualizacion(nodoA *a, int op) {
+    if (op <= 0 || op > 4) op = verficadorDeOpcion(op);
+
+    switch (op) {
+        case 1:
+            preorder(a);
+            printf("\t\t");
+            system("pause");
+            system("cls");
+            return 0;
+            break;
+        case 2:
+            inorder(a);
+            printf("\t\t");
+            system("pause");
+            system("cls");
+            return 0;
+            break;
+        case 3:
+            postorder(a);
+            printf("\t\t");
+            system("pause");
+            system("cls");
+            return 0;
+        case 4:
+            return 1;
+        default:
+            break;
     }
-    
 }
-int verficadorDeOpcion(int op){
-    do{
+int verficadorDeOpcion(int op) {
+    do {
         system("cls");
         printf("\n\n\t\tOpcion incorrecta, ingrese nuevamente\n");
         menuVisualizacionArbol();
         printf("\t\t->");
-        scanf("%d",&op);
+        scanf("%d", &op);
         system("cls");
-    }while(op <= 0 || op > 4);
+    } while (op <= 0 || op > 4);
     return op;
 }
 
-///Funcion de consulta, si desea seguir utilizando el archivo ya crea o
+/// Funcion de consulta, si desea seguir utilizando el archivo ya crea o
 
-int consulta(){
+int consulta() {
     char s;
     printf("\n\n\t\t--------------------------\n");
-    printf("\t\tDesea utilizar el documento actual ?[S / N]\n");
+    printf("\t\tDesea utilizar el Diccionario actual ?[S / N]\n");
     printf("\t\t--------------------------\n");
     printf("\t\t->");
     fflush(stdin);
-    scanf("%c",&s);
-    tolower(s);
+    scanf("%c", &s);
+    s = tolower(s);
     system("cls");
-    switch (s)
-    {
-    case 's':
-        return 1;
-        break;
-    case 'n':
-        return 0;
-         break;
-    default:
-        printf("\n\n\t\tOpcion invalida\n");
-        return consulta();
-        break;
+    switch (s) {
+        case 's':
+            return 1;
+            break;
+        case 'n':
+            return 0;
+            break;
+        default:
+            printf("\n\n\t\tOpcion invalida\n");
+            return consulta();
+            break;
     }
-    
-    
 }
