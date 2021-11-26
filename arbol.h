@@ -1,5 +1,5 @@
 // Librerias y constantes
-
+#pragma once
 #include "diccionario.h"
 
 typedef struct nodoT {
@@ -26,5 +26,5 @@ void leerBin(nodoA **a);
 void mostrarSubLista(nodoT *lista);
 void mostrarOcurrencia(nodoT *lista);
 void mostrarPalabra(nodoA *a);
-void preorder(nodoA  *a);
+void preorder(nodoA *a);
 void postorder(nodoA *a);

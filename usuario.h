@@ -17,6 +17,17 @@ void posAndId(nodoT *a);
 int preguntarId();
 void variosTerminos(nodoA *a);
 
+// 4
+int idMaximo();
+int validarPosicion(nodoT *ocurrencias, char palabra[20], int id, int posiciones);
+int terminoEncontrado(nodoA *a, char palabra[20], int id, int posicionesValidas);
+int compararCoincidencia(nodoA *a, char matriz[][20], int posiciones[], int id, int validosFrase, int posicionValida);
+int cargarPosiciones(nodoT *ocurrencias, int posiciones[], int id);
+int obtenerValidos(nodoA *a, char palabra[20], int posiciones[], int id);
+int validarFrase(nodoA *a, char matriz[][20], int posiciones[], int id, int validosFrase);
+void buscarFrase(nodoA *a, char frase[256]);
+int tokenizarFrase(char frase[256], char matriz[][20]);
+
 // 5)
 void palabraMayorFrecuencia(nodoA *a, int idDoc, PalabraFrecuente *res);
 int compararOcurrencias(nodoT *ocurrencia, PalabraFrecuente *res);

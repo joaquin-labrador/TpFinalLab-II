@@ -2,7 +2,10 @@
 
 #include <Windows.h>
 
+#include "arbol.h"
+
 int main() {
+    char frase[256];
     system("title Motor de busqueda");
     /* Creacion de una archivo binario a aparitir de un archivo .txt*/
     // leerTexto(2);
@@ -28,7 +31,8 @@ int main() {
         system("pause");
         exit(0);
     }
-
+    printf("%i\n", verificarIdIngresado(arbolDeLista, 3));
+    system("pause");
     if (consulta() == 0) {
         remove(FILE_PALABRAS);
         printf("Diccionario recargado, reinicie el programa!\n");
@@ -49,7 +53,7 @@ int main() {
                 id = preguntarId(arbolDeLista);
                 do {
                     repeticiones = busquedaEnAlgunDoc(arbolDeLista, preguntarPalabra(arbolDeLista, id), id);
-                    if (repeticiones == 0) {
+                    if (repeticiones == -1) {
                         printf("\n\n\t\tLa palabra no existe en el documento!\n");
                     }
                 } while (repeticiones == 0);
@@ -71,14 +75,16 @@ int main() {
                 system("cls");
                 break;
             case 4:
-                printf("\n\n\t\tEstamos trabajando, funcion en desarrollo\n");
+                fflush(stdin);
+                gets(frase);
+                buscarFrase(arbolDeLista, frase);
                 printf("\t\t");
                 system("pause");
                 system("cls");
                 break;
             case 5:
                 palabraMayorFrecuencia(arbolDeLista, preguntarId(arbolDeLista), &res);
-                // TODO: ESTITICA DE ESTE MOSTRADOR
+                // TODO: ESTETICA DE ESTE MOSTRADOR
                 printf("P: %s |F:  %d |ID:  %d", res.palabra, res.frecuencia, res.idDoc);
 
                 printf("\t\t");

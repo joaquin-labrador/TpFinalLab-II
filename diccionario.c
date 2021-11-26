@@ -1,4 +1,7 @@
 #include "diccionario.h"
+
+#include "arbol.h"
+
 termino crearTermino(char palabra[], int idDoc, int pos) {
     termino m;
     m.idDOC = idDoc;

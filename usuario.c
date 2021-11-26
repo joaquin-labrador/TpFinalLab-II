@@ -66,7 +66,11 @@ void variosTerminos(nodoA *a) {
         fflush(stdin);
         gets(termino);
         repeticiones = busquedaEnAlgunDoc(a, termino, id);
-        printf("\n\n\t\tLa palabra %s se repite %d vez / veces en el documento %d\n", termino, repeticiones, id);
+        if (repeticiones == -1) {
+            printf("\n\n\t\tLa palabra no existe en el documento\n");
+        } else {
+            printf("\n\n\t\tLa palabra %s se repite %d vez / veces en el documento %d\n", termino, repeticiones, id);
+        }
         system("pause");
         system("cls");
         printf("\n\n\t\tDesea continuar buscando terminos en este documento\n");
@@ -210,15 +214,12 @@ int preguntarId(nodoA *a) {
 }
 int verificarIdIngresado(nodoA *a, int id) {
     if (a != NULL) {
-        verificarIdIngresado(a->izq, id);
-        verificarIdIngresado(a->der, id);
-        if (verificarIdEnLista(a->ocurrencias, id) == 1) {
-            return 1;
-        }
+        return verificarIdEnLista(a->ocurrencias, id) ? 1 : verificarIdIngresado(a->izq, id) || verificarIdIngresado(a->der, id);
     } else {
         return 0;
     }
 }
+
 int verificarIdEnLista(nodoT *lista, int id) {
     while (lista != NULL) {
         if (lista->idDOC == id) {
@@ -294,4 +295,137 @@ int consulta() {
             return consulta();
             break;
     }
+}
+
+// PUNTO 4
+// Separa en una matriz de strings una frase
+int tokenizarFrase(char frase[256], char matriz[][20]) {
+    char *token = strtok(frase, "{}[]<> ,.:;/()");
+    int validos = 0;
+    while (token != 0) {
+        strcpy(matriz[validos++], token);
+        token = strtok(NULL, "{}[]<> ,.:;/()");
+    }
+    return validos;
+}
+
+void buscarFrase(nodoA *a, char frase[256]) {
+    int res;
+    char matriz[50][20];
+    int posiciones[50];
+    int validosFrase = 0;
+    validosFrase = tokenizarFrase(frase, matriz);
+
+    if (validosFrase <= 1) {
+        printf("\n-> Ingrese mas de una palabra\n\n");
+    } else {
+        for (int i = 1; i < idMaximo() + 1; i++) {
+            res = validarFrase(a, matriz, posiciones, i, validosFrase);
+            if (res) {
+                return;
+            }
+        }
+        printf("La frase no existe\n");
+    }
+}
+
+int validarFrase(nodoA *a, char matriz[][20], int posiciones[], int id, int validosFrase) {
+    int arrayValidospos = 0;
+    arrayValidospos = obtenerValidos(a, matriz[0], posiciones, id);
+    for (int i = 0; i < arrayValidospos; i++) {
+        if (compararCoincidencia(a, matriz, posiciones, id, validosFrase, i)) {
+            printf("\nFrase encontrada en el documento con id %d\n", id);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int obtenerValidos(nodoA *a, char palabra[20], int posiciones[], int id) {
+    int posicionesValidas = 0;
+    if (a) {
+        if (strcmpi(palabra, a->palabra) == 0) {
+            posicionesValidas = cargarPosiciones(a->ocurrencias, posiciones, id);
+        } else {
+            return (strcmpi(a->palabra, palabra) > 0) ? obtenerValidos(a->izq, palabra, posiciones, id) : obtenerValidos(a->der, palabra, posiciones, id);
+        }
+    }
+    return posicionesValidas;
+}
+
+// carga arreglo de posiciones de la palabra
+int cargarPosiciones(nodoT *ocurrencias, int posiciones[], int id) {
+    nodoT *aux;
+    aux = ocurrencias;
+    int validos = 0;
+
+    while (aux != NULL) {
+        if (aux->idDOC == id) {
+            posiciones[validos] = ocurrencias->pos;
+            validos++;
+        }
+        aux = aux->sig;
+    }
+    return validos;
+}
+
+// Retorna 1 si encuentra los terminos
+int compararCoincidencia(nodoA *a, char matriz[][20], int posiciones[], int id, int validosFrase, int posicionValida) {
+    int res = 1;
+    int j = 1;
+    int aux = posiciones[posicionValida] + 1;
+
+    while (j < validosFrase && res == 1) {
+        res = terminoEncontrado(a, matriz[j++], id, aux++);
+    }
+    return res;
+}
+
+int terminoEncontrado(nodoA *a, char palabra[20], int id, int posicionesValidas) {
+    int flag = 0;
+    if (a) {
+        if (strcmpi(palabra, a->palabra) == 0 && (a->ocurrencias->idDOC == id)) {
+            flag = validarPosicion(a->ocurrencias, a->palabra, id, a->ocurrencias->pos);
+        } else {
+            if (strcmpi(a->palabra, palabra) > 0) {
+                return terminoEncontrado(a->izq, palabra, id, posicionesValidas);
+            } else {
+                return terminoEncontrado(a->der, palabra, id, posicionesValidas);
+            }
+        }
+    } else {
+        flag = 0;
+    }
+    return flag;
+}
+
+int validarPosicion(nodoT *ocurrencias, char palabra[20], int id, int posiciones) {
+    while (ocurrencias != NULL) {
+        if (ocurrencias->idDOC == id) {
+            if (posiciones == ocurrencias->pos) {
+                return 1;
+            }
+        }
+        ocurrencias = ocurrencias->sig;
+    }
+    return 0;
+}
+
+// Retorna el idMaximo encontrado de los terminos cargados
+int idMaximo() {
+    FILE *buffer = fopen(FILE_PALABRAS, "rb");
+    termino t;
+    int id;
+    int flag = 1;
+    while (fread(&t, sizeof(termino), 1, buffer) > 0) {
+        if (flag) {
+            id = t.idDOC;
+            flag = 0;
+        }
+        if (id < t.idDOC) {
+            id = t.idDOC;
+        }
+    }
+    fclose(buffer);
+    return id;
 }
