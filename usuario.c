@@ -387,11 +387,7 @@ int terminoEncontrado(nodoA *a, char palabra[20], int id, int posicionesValidas)
         if (strcmpi(palabra, a->palabra) == 0 && (a->ocurrencias->idDOC == id)) {
             flag = validarPosicion(a->ocurrencias, a->palabra, id, a->ocurrencias->pos);
         } else {
-            if (strcmpi(a->palabra, palabra) > 0) {
-                return terminoEncontrado(a->izq, palabra, id, posicionesValidas);
-            } else {
-                return terminoEncontrado(a->der, palabra, id, posicionesValidas);
-            }
+            return strcmpi(a->palabra, palabra) > 0 ? terminoEncontrado(a->izq, palabra, id, posicionesValidas) : terminoEncontrado(a->der, palabra, id, posicionesValidas);
         }
     } else {
         flag = 0;
@@ -430,11 +426,10 @@ int idMaximo() {
     return id;
 }
 
-void mostrarPalabraFrecuente(PalabraFrecuente termino){
+void mostrarPalabraFrecuente(PalabraFrecuente termino) {
     printf("\n\n\t\t---------------------\n");
-    printf("\t\tPalabra mas frecuente del documento %d es:\n",termino.idDoc);
-    printf("\t\t-> %s\n",termino.palabra);
-    printf("\t\tCon una frecuencia de %d\n",termino.frecuencia);
+    printf("\t\tPalabra mas frecuente del documento %d es:\n", termino.idDoc);
+    printf("\t\t-> %s\n", termino.palabra);
+    printf("\t\tCon una frecuencia de %d\n", termino.frecuencia);
     printf("\t\t---------------------");
-    
 }
