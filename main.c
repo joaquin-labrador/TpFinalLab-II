@@ -18,7 +18,7 @@ int main() {
     int id = 0;
     int mayor = 0;
     int repeticionMenu = 1;
-
+    int id2 = 0;
     if (verificarIntegridad() == 0) {
         printf("No se ha encontrado diccionario, se cargara uno nuevo\n");
         for (int i = 1; i < MAX_TXT; i++) {
@@ -53,15 +53,15 @@ int main() {
                         printf("\n\n\t\tLa palabra no existe en el documento!\n");
                     }
                 } while (repeticiones == 0);
-
-                printf("\n\n\t\tLa palabra se repite %d %s en el documento ingresado\n", repeticiones, repeticiones == 1 ? "vez" : "veces");
                 printf("\t\t");
                 system("pause");
                 system("cls");
                 break;
             case 2:
-                repeticiones = repiticionesTotales(arbolDeLista, preguntarPalabra(arbolDeLista, -1));
-                printf("\n\n\t\tLa palabra ingresada se repite %d vez / veces en todos los archivos\n", repeticiones);
+                id = preguntarId(arbolDeLista);
+                system("pause");
+                id2 = preguntarId(arbolDeLista);
+                repeticionesTotales(arbolDeLista, preguntarPalabra(arbolDeLista, -1), id, id2);
                 printf("\t\t");
                 system("pause");
                 system("cls");
@@ -72,7 +72,6 @@ int main() {
                 break;
             case 4:
                 fflush(stdin);
-                // TODO: que si te equivocas puede volver a ingresar una frase
                 printf("\n\n\t\t  Ingrese una frase \n");
                 printf("\t\t ->");
                 gets(frase);

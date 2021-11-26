@@ -28,58 +28,66 @@ int repeticiones(nodoT *terminos, int id) {
 }
 
 // Punto 2
-
-int repiticionesTotales(nodoA *a, char palabra[]) {
+void repeticionesTotales(nodoA *a, char palabra[], int id, int id2) {
     if (a != NULL) {
         if (strcmpi(a->palabra, palabra) == 0) {
-            posAndId(a->ocurrencias);
-            return a->frecuencia;
+            if (verificarAnd(a->ocurrencias, id, id2) == 1) {
+                printf("\n\n\t\tLa palabra ingresada se encuentra en los dos documentos\n");
+                posAndId(a->ocurrencias, id, id2);
+
+            } else {
+                printf("\n\n\t\tLa palabra ingresada no se encuentra en los dos documentos\n");
+            }
+
         } else if (strcmpi(a->palabra, palabra) < 0)
-            return repiticionesTotales(a->der, palabra);
+            return repeticionesTotales(a->der, palabra, id, id2);
         else
-            return repiticionesTotales(a->izq, palabra);
-    } else {
-        return -1;  // Si la palabra no existe
+            return repeticionesTotales(a->izq, palabra, id, id2);
     }
 }
-void posAndId(nodoT *a) {
-    printf("\t\t- Posicion/es y Documento/s de la palabra buscada-\n");
+int verificarAnd(nodoT *lista, int id, int id2) {  // TODO: agrgegar al glosario
+    int verificador = 0;
+    int verificador2 = 0;
+    while (lista != NULL) {
+        if (lista->idDOC == id) verificador = 1;
+        if (lista->idDOC == id2) verificador2 = 1;
+        lista = lista->sig;
+    }
+    return (verificador && verificador2);
+}
+void posAndId(nodoT *a, int id, int id2) {
+    printf("\t\t- Posicion/es en los docuemtos %d y %d de la palabra buscada-\n", id, id2);
     while (a != NULL) {
-        printf("\t\t-----------------\n");
-        printf("\t\tPosicion %d \n", a->pos);
-        printf("\t\tDocumento %d \n", a->idDOC);
-        printf("\t\t-----------------\n");
+        if (a->idDOC == id || a->idDOC == id2) {
+            printf("\t\t-----------------\n");
+            printf("\t\tPosicion %d \n", a->pos);
+            printf("\t\tDocumento %d \n", a->idDOC);
+            printf("\t\t-----------------\n");
+        }
         a = a->sig;
     }
 }
-
 // Punto 3
 
-void variosTerminos(nodoA *a) {
+void variosTerminos(nodoA *a) {  // TODO: glosario
+    char palabras[256];
+    char matrizPalabras[50][20];
     int id = preguntarId(a);
-    char s;
-    char termino[30];
-    int repeticiones = 0;
-    do {
-        printf("\n\n\t\tIngrese palabra a buscar en el documento %d\n", id);
-        printf("\t\t->");
-        fflush(stdin);
-        gets(termino);
-        repeticiones = busquedaEnAlgunDoc(a, termino, id);
-        if (repeticiones == -1) {
-            printf("\n\n\t\tLa palabra no existe en el documento\n");
+    int validos;
+    int res;
+    printf("\n\n\t\tIngrese palabras a buscar en el documento %d separadas por espacios\n", id);
+    fflush(stdin);
+    gets(palabras);
+    validos = tokenizarFrase(palabras, matrizPalabras);
+    for (int i = 0; i < validos; i++) {
+        res = busquedaEnAlgunDoc(a, matrizPalabras[i], id);
+        if (res != -1) {
+            printf("La palabra \"%s\" se encuentra en el documento %d\n", matrizPalabras[i], id);
         } else {
-            printf("\n\n\t\tLa palabra %s se repite %d vez / veces en el documento %d\n", termino, repeticiones, id);
+            printf("\nLa palabra \"%s\" no se encuentra en el documento %d\n\n", matrizPalabras[i], id);
         }
-        system("pause");
-        system("cls");
-        printf("\n\n\t\tDesea continuar buscando terminos en este documento\n");
-        fflush(stdin);
-        printf("\t\t->");
-        scanf("%c", &s);
-        towlower(s);
-        system("cls");
-    } while (s == 's');
+    }
+    system("pause");
 }
 
 // Punto 5

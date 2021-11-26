@@ -11,10 +11,11 @@ typedef struct PalabraFrecuente {
 int busquedaEnAlgunDoc(nodoA *a, char palabra[], int IdDoc);
 int repeticiones(nodoT *terminos, int id);
 // 2)
-int repiticionesTotales(nodoA *a, char palabra[]);
-void posAndId(nodoT *a);
+void repeticionesTotales(nodoA *a, char palabra[], int id, int id2);
+int verificarAnd(nodoT *lista, int id, int id2);
+void posAndId(nodoT *a, int id, int id2);
 // 3)
-int preguntarId();
+int preguntarId(nodoA *a);
 void variosTerminos(nodoA *a);
 
 // 4

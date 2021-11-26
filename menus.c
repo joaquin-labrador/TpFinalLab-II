@@ -3,7 +3,7 @@ void menuMain() {
     printf("\t\t\t--[MOTOR DE BUSQUEDA DE PALABRAS]--\n");
     printf("\t\t---------------------------------------------------------\n");
     printf("\t\t(1) Buscar un termino en un documento\n");
-    printf("\t\t(2) Total de apariciones de un termino\n");
+    printf("\t\t(2) Total de apariciones de un termino en dos documentos\n");
     printf("\t\t(3) Buscar varios terminos en un documento\n");
     printf("\t\t(4) Buscar una frase\n");
     printf("\t\t(5) Buscar el termino con mas frecuencia en un documento\n");
