@@ -7,9 +7,6 @@
 int main() {
     char frase[256];
     system("title Motor de busqueda");
-    /* Creacion de una archivo binario a aparitir de un archivo .txt*/
-    // leerTexto(2);
-    // Creacion del arbol a partir del archivo binario
     PalabraFrecuente res;
     res.frecuencia = 0;
     nodoA *arbolDeLista = NULL;
@@ -75,7 +72,7 @@ int main() {
                 break;
             case 4:
                 fflush(stdin);
-                //TODO: que si te equivocas puede volver a ingresar una frase
+                // TODO: que si te equivocas puede volver a ingresar una frase
                 printf("\n\n\t\t  Ingrese una frase \n");
                 printf("\t\t ->");
                 gets(frase);
@@ -113,4 +110,3 @@ int main() {
 
     return 0;
 }
-

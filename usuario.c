@@ -299,20 +299,20 @@ int consulta() {
 
 // PUNTO 4
 // Separa en una matriz de strings una frase
-int tokenizarFrase(char frase[256], char matriz[][20]) {
-    char *token = strtok(frase, "{}[]<> ,.:;/()");
+int tokenizarFrase(char frase[512], char matriz[][20]) {
+    char *token = strtok(frase, "\"{}[]<> ,.:;/()");
     int validos = 0;
     while (token != 0) {
         strcpy(matriz[validos++], token);
-        token = strtok(NULL, "{}[]<> ,.:;/()");
+        token = strtok(NULL, "\"{}[]<> ,.:;/()");
     }
     return validos;
 }
 
-void buscarFrase(nodoA *a, char frase[256]) {
+void buscarFrase(nodoA *a, char frase[512]) {
     int res;
     char matriz[50][20];
-    int posiciones[50];
+    int posiciones[256];
     int validosFrase = 0;
     validosFrase = tokenizarFrase(frase, matriz);
 
