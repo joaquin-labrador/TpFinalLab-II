@@ -47,3 +47,4 @@ int lanzadorDeVisualizacion(nodoA *a, int op);
 
 int consulta();
 void creacionBinario();
+void mostrarPalabraFrecuente(PalabraFrecuente termino);

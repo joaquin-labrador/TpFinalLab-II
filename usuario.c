@@ -317,7 +317,7 @@ void buscarFrase(nodoA *a, char frase[256]) {
     validosFrase = tokenizarFrase(frase, matriz);
 
     if (validosFrase <= 1) {
-        printf("\n-> Ingrese mas de una palabra\n\n");
+        printf("\n\n\t\t -> Ingrese una frase de mas de una palabra \n");
     } else {
         for (int i = 1; i < idMaximo() + 1; i++) {
             res = validarFrase(a, matriz, posiciones, i, validosFrase);
@@ -325,7 +325,7 @@ void buscarFrase(nodoA *a, char frase[256]) {
                 return;
             }
         }
-        printf("La frase no existe\n");
+        printf("\t\t La frase no existe\n");
     }
 }
 
@@ -334,7 +334,7 @@ int validarFrase(nodoA *a, char matriz[][20], int posiciones[], int id, int vali
     arrayValidospos = obtenerValidos(a, matriz[0], posiciones, id);
     for (int i = 0; i < arrayValidospos; i++) {
         if (compararCoincidencia(a, matriz, posiciones, id, validosFrase, i)) {
-            printf("\nFrase encontrada en el documento con id %d\n", id);
+            printf("\t\t < Frase encontrada en el documento con id %d >\n", id);
             return 1;
         }
     }
@@ -428,4 +428,13 @@ int idMaximo() {
     }
     fclose(buffer);
     return id;
+}
+
+void mostrarPalabraFrecuente(PalabraFrecuente termino){
+    printf("\n\n\t\t---------------------\n");
+    printf("\t\tPalabra mas frecuente del documento %d es:\n",termino.idDoc);
+    printf("\t\t-> %s\n",termino.palabra);
+    printf("\t\tCon una frecuencia de %d\n",termino.frecuencia);
+    printf("\t\t---------------------");
+    
 }

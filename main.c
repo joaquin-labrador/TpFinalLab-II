@@ -31,8 +31,7 @@ int main() {
         system("pause");
         exit(0);
     }
-    printf("%i\n", verificarIdIngresado(arbolDeLista, 3));
-    system("pause");
+
     if (consulta() == 0) {
         remove(FILE_PALABRAS);
         printf("Diccionario recargado, reinicie el programa!\n");
@@ -76,6 +75,9 @@ int main() {
                 break;
             case 4:
                 fflush(stdin);
+                //TODO: que si te equivocas puede volver a ingresar una frase
+                printf("\n\n\t\t  Ingrese una frase \n");
+                printf("\t\t ->");
                 gets(frase);
                 buscarFrase(arbolDeLista, frase);
                 printf("\t\t");
@@ -84,9 +86,7 @@ int main() {
                 break;
             case 5:
                 palabraMayorFrecuencia(arbolDeLista, preguntarId(arbolDeLista), &res);
-                // TODO: ESTETICA DE ESTE MOSTRADOR
-                printf("P: %s |F:  %d |ID:  %d", res.palabra, res.frecuencia, res.idDoc);
-
+                mostrarPalabraFrecuente(res);
                 printf("\t\t");
                 system("pause");
                 system("cls");
@@ -103,9 +103,14 @@ int main() {
             case 7:
                 repeticionMenu = 0;
             default:
+                printf("\n\n\t\tUsted no a ingresado un numero, se cortara el proceso\n");
+                system("pause");
+                system("cls");
+                repeticionMenu = 0;
                 break;
         }
     } while (repeticionMenu);  // Si se agregan opciones al menuMain, se aumentan los paramentros
 
     return 0;
 }
+
